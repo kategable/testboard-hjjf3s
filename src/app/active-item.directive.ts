@@ -1,10 +1,21 @@
-import { Directive, ElementRef } from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 
 @Directive({
-  selector: '[app-board-item[active]'
+  selector: 'app-panel'
 })
 export class ActiveItemDirective {
-  constructor(el: ElementRef) {
-       el.nativeElement.style.backgroundColor = 'yellow'; 
+  defaultColor: string;
+  @HostListener('click') active() {
+    this.setActiveColor();
+  }
+  setActiveColor() {
+    this.el.nativeElement.style.backgroundColor = this.el.nativeElement.classList.contains(
+      'active'
+    )
+      ? this.defaultColor
+      : 'yellow';
+  }
+  constructor(private el: ElementRef) {
+    this.defaultColor = this.el.nativeElement.style.backgroundColor;
   }
 }

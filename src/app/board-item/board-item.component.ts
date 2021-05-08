@@ -1,20 +1,27 @@
-import { Input } from "@angular/core";
-import { Component, OnInit } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { pluck, switchMap } from "rxjs/operators";
-import { BoardDataService } from "../board-data.service";
+import { Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { pluck, switchMap } from 'rxjs/operators';
+import { BoardDataService } from '../board-data.service';
 
 @Component({
-  selector: "app-board-item",
+  selector: 'app-board-item',
   template: `
-  <app-panel *ngIf="item$ | async as item" [class.collapsed]="item.collapsed" draggable='true'>
-  <h3 (click)="item.collapsed=!item.collapsed">{{item.name}}</h3>
-  <pre>{{item|json}}</pre>
-  </app-panel>`,
+    <app-panel
+      (click)="item.active = !item.active"
+      *ngIf="(item$ | async) as item"
+      [class.active]="item.active"
+      [class.collapsed]="item.collapsed"
+      draggable="true"
+    >
+      <h3 (click)="item.collapsed = !item.collapsed">{{ item.name }}</h3>
+      <pre>{{ item | json }}</pre>
+    </app-panel>
+  `
 })
 export class BoardItemComponent implements OnInit {
   localState = new BehaviorSubject({
-    id: ""
+    id: ''
   });
   @Input() set itemId(id: string) {
     if (id) {
@@ -22,7 +29,7 @@ export class BoardItemComponent implements OnInit {
     }
   }
   item$ = this.localState.pipe(
-    pluck("id"),
+    pluck('id'),
     switchMap(id => this.data.getItemById(id))
   );
 

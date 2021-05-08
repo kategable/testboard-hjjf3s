@@ -1,10 +1,10 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
-import { pluck, switchMap } from "rxjs/operators";
-import { BoardDataService } from "../board-data.service";
+import { Component, Input, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { pluck, switchMap } from 'rxjs/operators';
+import { BoardDataService } from '../board-data.service';
 
 @Component({
-  selector: "app-board-col",
+  selector: 'app-board-col',
   template: `
     <ng-container *ngIf="(item$ | async) as item">
       <h2>{{ item.name }}</h2>
@@ -37,7 +37,7 @@ import { BoardDataService } from "../board-data.service";
 })
 export class BoardColComponent implements OnInit {
   localState = new BehaviorSubject({
-    id: ""
+    id: ''
   });
   @Input() set itemId(id: string) {
     if (id) {
@@ -45,7 +45,7 @@ export class BoardColComponent implements OnInit {
     }
   }
   item$ = this.localState.pipe(
-    pluck("id"),
+    pluck('id'),
     switchMap(id => this.data.getItemById(id))
   );
 
